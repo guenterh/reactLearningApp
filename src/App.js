@@ -1,11 +1,14 @@
 import './App.css';
-import React,{Component} from "react";
+import React, {Component, Fragment} from "react";
 import Users from "./components/users/Users";
 import NavBar from "./components/layout/NavBar";
 import Search from "./components/users/Search";
 import axios from "axios";
-import PropTypes from "prop-types";
 import Alert from "./components/layout/Alert";
+import About from "./components/pages/About";
+
+
+import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 
 
 class App extends Component {
@@ -46,22 +49,38 @@ class App extends Component {
         const {users, loading} = this.state
 
         return (
+            <Router>
             <div className="App">
                 <NavBar/>
                 <div className='container'>
-                    <Alert alert={this.state.alert}/>
-                <Search
-                    searchUsers={this.searchUsers}
-                    clearUsers={this.clear}
-                    showClear={users.length > 0}
-                    setAlert={this.setAlert}
-                />
-                </div>
-                <div className='container'>
-                    <Users loading={loading} users={users}/>
+                <Alert alert={this.state.alert}/>
+                <Routes>
+                    <Route
+                        exact
+                        path='/'
+                        element={
+                            <Fragment>
+                            <Search
+                                searchUsers={this.searchUsers}
+                                clearUsers={this.clear}
+                                showClear={users.length > 0}
+                                setAlert={this.setAlert}
+                            />
+                            <Users loading={loading} users={users}/>
 
-                </div>
+                            </Fragment>
+
+                        }
+                    />
+                    <Route
+                        exact
+                        path='/about'
+                        element={<About/>}
+                    />
+                </Routes>
             </div>
+            </div>
+            </Router>
         );
     }
 }
